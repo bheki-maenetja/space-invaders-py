@@ -8,7 +8,7 @@ from pygame.locals import (
   K_LEFT
 )
 
-import random
+from random import choice
 from os import path
 import colours
 
@@ -52,9 +52,30 @@ class Player(pygame.sprite.Sprite):
     if self.rect.right > WIDTH:
       self.rect.right = WIDTH
 
+class Alien(pygame.sprite.Sprite):
+  def __init__(self, x, y):
+    super(Alien, self).__init__()
+    self.image = pygame.Surface((20, 20))
+    self.image.fill(choice(colours.ALL_COLOURS)[1])
+    self.rect = self.image.get_rect(center=(x,y))
+    self.speed = 2
+
+  def update(self):
+    self.rect.move_ip(self.speed, 0)
+    if self.rect.left < 0 or self.rect.right > WIDTH:
+      self.rect.move_ip(0, 30)
+      self.speed = -self.speed
+
 # Sprites and Groups
 all_sprites = pygame.sprite.Group()
+aliens = pygame.sprite.Group()
 player = Player()
+
+for i in range(60, 301, 60):
+  for j in range(20, WIDTH, 40):
+    new_alien = Alien(j, i)
+    all_sprites.add(new_alien)
+    aliens.add(new_alien)
 
 all_sprites.add(player)
 

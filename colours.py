@@ -13,3 +13,18 @@ TEAL = (0, 128, 128)
 SIENNA = (160, 83, 45)
 TAN = (210, 180, 140)
 INDIGO = (75, 0, 130)
+
+# COLOUR ARRAYS
+ALL_COLOURS = [
+  ('Red', RED),
+  ('Blue', BLUE),
+  ('Yellow', YELLOW),
+  ('Green', GREEN),
+  ('Orange', ORANGE),
+  ('Magenta', MAGENTA),
+  ('Olive', OLIVE),
+  ('Khaki', KHAKI),
+  ('Teal', TEAL),
+  ('Sienna', TAN),
+  ('Indigo', INDIGO)
+]
