@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
   def fire_bullet(self):
     new_bullet = Bullet(self.rect.centerx, self.rect.y)
     all_sprites.add(new_bullet)
+    bullets.add(new_bullet)
     
   def boundary_check(self):
     if self.rect.x < 0:
@@ -83,11 +84,30 @@ class Alien(pygame.sprite.Sprite):
     if self.rect.left < 0 or self.rect.right > WIDTH:
       self.rect.move_ip(0, 30)
       self.speed = -self.speed
+  
+  def drop_bomb(self):
+    new_bomb = Bomb(self.rect.centerx, self.rect.bottom)
+    all_sprites.add(new_bomb)
+    bombs.add(new_bomb)
+
+class Bomb(pygame.sprite.Sprite):
+  def __init__(self, x, y):
+    super(Bomb, self).__init__()
+    self.image = pygame.Surface((10, 20))
+    self.image.fill(colours.RED)
+    self.rect = self.image.get_rect(center=(x,y))
+    self.speed = 10
+  
+  def update(self):
+    self.rect.move_ip(0, self.speed)
+    if self.rect.bottom > HEIGHT:
+      self.kill()
 
 # Sprites and Groups
 all_sprites = pygame.sprite.Group()
 aliens = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
+bombs = pygame.sprite.Group()
 
 player = Player()
 
@@ -98,9 +118,9 @@ for i in range(60, 301, 60):
     aliens.add(new_alien)
 
 all_sprites.add(player)
-
 # GAME VARIABLES
-
+frames = 0
+timer = 0
 # TEXT
 
 # UTILITY FUNCTIONS
@@ -119,6 +139,20 @@ while running:
   # Update
   all_sprites.update()
   
+  pygame.sprite.groupcollide(bullets, aliens, True, True)
+  pygame.sprite.groupcollide(bullets, bombs, True, True)
+
+  if pygame.sprite.spritecollide(player, bombs, True):
+    print("You've been hit!!!")
+
+  frames += 1
+  if frames % FPS == 0:
+    if list(aliens) != []:
+      chosen_alien = choice(list(aliens))
+      if chosen_alien != None: chosen_alien.drop_bomb() 
+    timer = frames // FPS
+    print(timer)
+
   # Draw / Render
   screen.fill(colours.WHITE)
   all_sprites.draw(screen)
