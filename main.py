@@ -5,7 +5,8 @@
 import pygame
 from pygame.locals import (
   K_RIGHT,
-  K_LEFT
+  K_LEFT,
+  K_SPACE
 )
 
 from random import choice
@@ -45,12 +46,29 @@ class Player(pygame.sprite.Sprite):
       self.rect.move_ip(self.speed, 0)
 
     self.boundary_check()
+  
+  def fire_bullet(self):
+    new_bullet = Bullet(self.rect.centerx, self.rect.y)
+    all_sprites.add(new_bullet)
     
   def boundary_check(self):
     if self.rect.x < 0:
       self.rect.x = 0
     if self.rect.right > WIDTH:
       self.rect.right = WIDTH
+
+class Bullet(pygame.sprite.Sprite):
+  def __init__(self, x, y):
+    super(Bullet, self).__init__()
+    self.image = pygame.Surface((5, 30))
+    self.image.fill(colours.BLACK)
+    self.rect = self.image.get_rect(center=(x,y))
+    self.speed = 10
+  
+  def update(self):
+    self.rect.move_ip(0, -self.speed)
+    if self.rect.bottom < 0:
+      self.kill()
 
 class Alien(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -69,6 +87,8 @@ class Alien(pygame.sprite.Sprite):
 # Sprites and Groups
 all_sprites = pygame.sprite.Group()
 aliens = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+
 player = Player()
 
 for i in range(60, 301, 60):
@@ -93,6 +113,8 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT: # check for closing the window
       running = False
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+      player.fire_bullet()
 
   # Update
   all_sprites.update()
