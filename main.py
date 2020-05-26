@@ -21,7 +21,7 @@ FPS = 60
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("My Game")
+pygame.display.set_caption("Space Invaders")
 clock = pygame.time.Clock()
 
 # LOAD ALL SPRITE IMAGES
@@ -118,10 +118,22 @@ for i in range(60, 301, 60):
     aliens.add(new_alien)
 
 all_sprites.add(player)
+
 # GAME VARIABLES
 frames = 0
 timer = 0
+player_lives = 10
+player_score = 0
+
 # TEXT
+font_name = pygame.font.match_font('arial')
+
+def draw_text(surf, text, size, x, y):
+  font = pygame.font.Font(font_name, size)
+  text_surf = font.render(text, True, colours.BLACK)
+  text_rect = text_surf.get_rect()
+  text_rect.center = (x,y)
+  surf.blit(text_surf, text_rect)
 
 # UTILITY FUNCTIONS
 
@@ -139,11 +151,15 @@ while running:
   # Update
   all_sprites.update()
   
-  pygame.sprite.groupcollide(bullets, aliens, True, True)
+  alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True)
+  for kill in alien_kills:
+    player_score += 100
+
   pygame.sprite.groupcollide(bullets, bombs, True, True)
 
   if pygame.sprite.spritecollide(player, bombs, True):
-    print("You've been hit!!!")
+    screen.fill(colours.RED)
+    player_lives -= 1
 
   frames += 1
   if frames % FPS == 0:
@@ -151,11 +167,12 @@ while running:
       chosen_alien = choice(list(aliens))
       if chosen_alien != None: chosen_alien.drop_bomb() 
     timer = frames // FPS
-    print(timer)
 
   # Draw / Render
   screen.fill(colours.WHITE)
   all_sprites.draw(screen)
+  for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}"]):
+    draw_text(screen, text, 18, 135 * (i+1), 20)
 
   # AFTER Drawing Everything, Flip the Display
   pygame.display.flip()
