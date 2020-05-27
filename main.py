@@ -79,11 +79,15 @@ class Alien(pygame.sprite.Sprite):
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = 2
 
-  def update(self):
-    self.rect.move_ip(self.speed, 0)
-    if self.rect.left < 0 or self.rect.right > WIDTH:
-      self.rect.move_ip(0, 30)
-      self.speed = -self.speed
+  def update(self, command='', **kwargs):
+    if command == '':
+      self.rect.move_ip(self.speed, 0)
+      if self.rect.left < 0 or self.rect.right > WIDTH:
+        self.rect.move_ip(0, 30)
+        self.speed = -self.speed
+    if command == 'speed_up':
+      self.speed_up(kwargs['speed'])
+      print(abs(self.speed))
   
   def drop_bomb(self):
     new_bomb = Bomb(self.rect.centerx, self.rect.bottom)
@@ -91,7 +95,7 @@ class Alien(pygame.sprite.Sprite):
     bombs.add(new_bomb)
   
   def speed_up(self, speed):
-    self.speed += speed
+    self.speed = self.speed + speed if self.speed > 0 else self.speed - speed
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -170,6 +174,7 @@ while running:
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360]
   if len(chosen_aliens) == 0:
     set_aliens()
+    aliens.update('speed_up', speed=2)
     
   pygame.sprite.groupcollide(bullets, bombs, True, True)
 
