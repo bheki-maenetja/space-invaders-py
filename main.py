@@ -89,6 +89,9 @@ class Alien(pygame.sprite.Sprite):
     new_bomb = Bomb(self.rect.centerx, self.rect.bottom)
     all_sprites.add(new_bomb)
     bombs.add(new_bomb)
+  
+  def speed_up(self, speed):
+    self.speed += speed
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -111,12 +114,6 @@ bombs = pygame.sprite.Group()
 
 player = Player()
 
-for i in range(60, 301, 60):
-  for j in range(20, WIDTH, 40):
-    new_alien = Alien(j, i)
-    all_sprites.add(new_alien)
-    aliens.add(new_alien)
-
 all_sprites.add(player)
 
 # GAME VARIABLES
@@ -135,7 +132,22 @@ def draw_text(surf, text, size, x, y):
   text_rect.center = (x,y)
   surf.blit(text_surf, text_rect)
 
+# SCREENS
+def draw_menu(screen):
+  menu_surf = pygame.Surface((WIDTH -100, HEIGHT - 100))
+  menu_surf.fill(colours.BLUE)
+  menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
+  screen.blit(menu_surf, menu_rect)
+
 # UTILITY FUNCTIONS
+def set_aliens():
+  for i in range(60, 301, 60):
+    for j in range(20, WIDTH, 40):
+      new_alien = Alien(j, i)
+      all_sprites.add(new_alien)
+      aliens.add(new_alien)
+
+set_aliens()
 
 # GAME LOOP
 running = True
@@ -154,11 +166,14 @@ while running:
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True)
   for kill in alien_kills:
     player_score += 100
-
+  
+  chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360]
+  if len(chosen_aliens) == 0:
+    set_aliens()
+    
   pygame.sprite.groupcollide(bullets, bombs, True, True)
 
   if pygame.sprite.spritecollide(player, bombs, True):
-    screen.fill(colours.RED)
     player_lives -= 1
 
   frames += 1
@@ -170,9 +185,12 @@ while running:
 
   # Draw / Render
   screen.fill(colours.WHITE)
-  all_sprites.draw(screen)
-  for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}"]):
-    draw_text(screen, text, 18, 135 * (i+1), 20)
+  if player_lives <= 0:
+    draw_menu(screen)
+  else:
+    all_sprites.draw(screen)
+    for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}"]):
+      draw_text(screen, text, 18, 135 * (i+1), 20)
 
   # AFTER Drawing Everything, Flip the Display
   pygame.display.flip()
