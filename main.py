@@ -6,6 +6,7 @@ import pygame
 from pygame.locals import (
   K_RIGHT,
   K_LEFT,
+  K_UP,
   K_SPACE
 )
 
@@ -81,14 +82,13 @@ class Alien(pygame.sprite.Sprite):
 
   def update(self, command='', **kwargs):
     print(f'Current Speed: {abs(self.speed)}')
-    if command == '':
-      self.rect.move_ip(self.speed, 0)
-      if self.rect.left < 0 or self.rect.right > WIDTH:
-        self.rect.move_ip(0, 30)
-        self.speed = -self.speed
-        if self.rect.top > HEIGHT - 100: self.kill()
-    elif command == 'set_speed':
+    if command == 'set_speed':
       self.set_speed(kwargs['speed'])
+    if self.rect.left < 0 or self.rect.right > WIDTH:
+      self.speed = -self.speed
+      # self.rect.move_ip(self.speed, 0)
+      # if self.rect.top > HEIGHT - 100: self.kill()
+    self.rect.move_ip(self.speed, 0)
     print(f'New Speed: {abs(self.speed)}')
   
   def drop_bomb(self):
@@ -97,7 +97,7 @@ class Alien(pygame.sprite.Sprite):
     bombs.add(new_bomb)
   
   def set_speed(self, speed):
-    self.speed = speed if self.speed > 0 else -speed
+    self.speed = speed if self.speed >= 0 else -speed
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -127,7 +127,9 @@ frames = 0
 timer = 0
 player_lives = 10
 player_score = 0
-alien_speed = 2
+alien_speed = 4
+
+update_aliens = True
 
 # TEXT
 font_name = pygame.font.match_font('arial')
@@ -166,28 +168,37 @@ while running:
       running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
       player.fire_bullet()
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+      alien_speed += 1
+      aliens.update('set_speed', speed=alien_speed)
+      update_aliens = False
+    else:
+      update_aliens = True
+
 
   # Update
-  bullets.update()
-  bombs.update()
   player.update()
+  bombs.update()
+  bullets.update()
+
+  if update_aliens: aliens.update()
   
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True)
   for kill in alien_kills:
     player_score += 100
   
-  chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360]
-  if len(chosen_aliens) == 0:
-    alien_speed += 1
-    aliens.update('set_speed', speed=alien_speed)
-    set_aliens()
-  else:
-    aliens.update()
+  # chosen_aliens = [alien for alien in aliens if alien.rect.centery < 300]
+  # if len(chosen_aliens) == 0:
+  #   alien_speed += 1
+  #   aliens.update('set_speed', speed=alien_speed)
+  #   # set_aliens()
+  # else:
+  #   aliens.update()
     
   pygame.sprite.groupcollide(bullets, bombs, True, True)
 
   if pygame.sprite.spritecollide(player, bombs, True):
-    player_lives -= 1
+    player_lives = player_lives
 
   frames += 1
   if frames % FPS == 0:
