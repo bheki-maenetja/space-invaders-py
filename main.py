@@ -79,25 +79,17 @@ class Alien(pygame.sprite.Sprite):
     self.image.fill(choice(colours.ALL_COLOURS)[1])
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = speed
+    # print(self.rect.x, self.rect.y)
 
-  def update(self, command='', **kwargs):
-    print(f'Current Speed: {abs(self.speed)}')
-    if command == 'set_speed':
-      self.set_speed(kwargs['speed'])
+  def update(self):
     if self.rect.left < 0 or self.rect.right > WIDTH:
       self.speed = -self.speed
-      # self.rect.move_ip(self.speed, 0)
-      # if self.rect.top > HEIGHT - 100: self.kill()
     self.rect.move_ip(self.speed, 0)
-    print(f'New Speed: {abs(self.speed)}')
   
   def drop_bomb(self):
     new_bomb = Bomb(self.rect.centerx, self.rect.bottom)
     all_sprites.add(new_bomb)
     bombs.add(new_bomb)
-  
-  def set_speed(self, speed):
-    self.speed = speed if self.speed >= 0 else -speed
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -127,7 +119,7 @@ frames = 0
 timer = 0
 player_lives = 10
 player_score = 0
-alien_speed = 4
+alien_speed = 20 # Aliens speeds: 2,4,5,8,10 & 20 (maybe)
 
 update_aliens = True
 
@@ -168,20 +160,10 @@ while running:
       running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
       player.fire_bullet()
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-      alien_speed += 1
-      aliens.update('set_speed', speed=alien_speed)
-      update_aliens = False
-    else:
-      update_aliens = True
 
 
   # Update
-  player.update()
-  bombs.update()
-  bullets.update()
-
-  if update_aliens: aliens.update()
+  all_sprites.update()
   
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True)
   for kill in alien_kills:
