@@ -3,6 +3,7 @@
 # pylint: disable=no-name-in-module
 # Skeleton for a new project
 import pygame
+from time import sleep
 from pygame.locals import (
   K_RIGHT,
   K_LEFT,
@@ -84,6 +85,8 @@ class Alien(pygame.sprite.Sprite):
   def update(self):
     if self.rect.left < 0 or self.rect.right > WIDTH:
       self.speed = -self.speed
+      self.rect.move_ip(self.speed, 30)
+      return
     self.rect.move_ip(self.speed, 0)
   
   def drop_bomb(self):
@@ -117,9 +120,38 @@ all_sprites.add(player)
 # GAME VARIABLES
 frames = 0
 timer = 0
+game_level = 1
 player_lives = 10
 player_score = 0
-alien_speed = 20 # Aliens speeds: 2,4,5,8,10 & 20 (maybe)
+alien_speed = 2 # Aliens speeds: 2,4,5,8,10 & 20 (maybe)
+
+game_settings = {
+  1: {
+    'alien_speed': 2,
+    'alien_fire_rate': 2.5,
+    'num_waves': 3,
+  },
+  2: {
+    'alien_speed': 4,
+    'alien_fire_rate': 2,
+    'num_waves': 5,
+  },
+  3: {
+    'alien_speed': 5,
+    'alien_fire_rate': 1.5,
+    'num_waves': 7,
+  },
+  4: {
+    'alien_speed': 8,
+    'alien_fire_rate': 1,
+    'num_waves': 9,
+  },
+  5: {
+    'alien_speed': 10,
+    'alien_fire_rate': 0.5,
+    'num_waves': 11,
+  },
+}
 
 update_aliens = True
 
@@ -169,21 +201,20 @@ while running:
   for kill in alien_kills:
     player_score += 100
   
-  # chosen_aliens = [alien for alien in aliens if alien.rect.centery < 300]
-  # if len(chosen_aliens) == 0:
-  #   alien_speed += 1
-  #   aliens.update('set_speed', speed=alien_speed)
-  #   # set_aliens()
-  # else:
-  #   aliens.update()
+  chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360]
+  if len(chosen_aliens) == 0:
+    set_aliens()
+  else:
+    aliens.update()
     
   pygame.sprite.groupcollide(bullets, bombs, True, True)
 
   if pygame.sprite.spritecollide(player, bombs, True):
+    # sleep(0.5)
     player_lives = player_lives
 
   frames += 1
-  if frames % FPS == 0:
+  if frames % (0.5 * FPS) == 0:
     if list(aliens) != []:
       chosen_alien = choice(list(aliens))
       if chosen_alien != None: chosen_alien.drop_bomb() 
