@@ -87,6 +87,8 @@ class Alien(pygame.sprite.Sprite):
       self.speed = -self.speed
       self.rect.move_ip(self.speed, 30)
       return
+    if self.rect.y > HEIGHT:
+      self.kill()
     self.rect.move_ip(self.speed, 0)
   
   def drop_bomb(self):
@@ -121,7 +123,7 @@ all_sprites.add(player)
 is_game_over = False
 frames = 0
 timer = 0
-game_level = 1
+game_level = 5
 player_lives = 10
 player_score = 0
 
@@ -192,6 +194,7 @@ def set_game_settings(level):
 # Function Calls
 set_game_settings(game_level)
 set_aliens()
+num_waves -= 1
 
 # GAME LOOP
 running = True
@@ -213,19 +216,21 @@ while running:
   
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
   if len(chosen_aliens) == 0:
-    if num_waves != 0: 
+    if num_waves == 0 and game_level == 5 and list(aliens) == []:
+      is_game_over = True
+    elif num_waves == 0 and list(aliens) == []:
+      sleep(1)
+      game_level += 1
+      set_game_settings(game_level)
+    elif num_waves != 0: 
       set_aliens()
       num_waves -= 1
-    elif num_waves == 0:
-      is_game_over = True
-  else:
-    aliens.update()
     
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
   if pygame.sprite.spritecollide(player, bombs, True): # collisions between player and bombs
     # sleep(0.5)
-    player_lives -= 1
+    # player_lives -= 1
     player_lives = player_lives
     if player_lives == 0:
       is_game_over = True
