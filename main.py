@@ -66,7 +66,7 @@ class Bullet(pygame.sprite.Sprite):
     self.image = pygame.Surface((5, 30))
     self.image.fill(colours.BLACK)
     self.rect = self.image.get_rect(center=(x,y))
-    self.speed = 10
+    self.speed = 12
   
   def update(self):
     self.rect.move_ip(0, -self.speed)
@@ -118,42 +118,45 @@ player = Player()
 all_sprites.add(player)
 
 # GAME VARIABLES
+is_game_over = False
 frames = 0
 timer = 0
 game_level = 1
 player_lives = 10
 player_score = 0
-alien_speed = 2 # Aliens speeds: 2,4,5,8,10 & 20 (maybe)
 
-game_settings = {
+alien_speed = 0 
+num_waves = 0
+alien_waves = 0
+
+# Game Settings
+game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
   1: {
-    'alien_speed': 2,
+    'alien_speed': 1,
     'alien_fire_rate': 2.5,
     'num_waves': 3,
   },
   2: {
-    'alien_speed': 4,
+    'alien_speed': 2,
     'alien_fire_rate': 2,
     'num_waves': 5,
   },
   3: {
-    'alien_speed': 5,
+    'alien_speed': 4,
     'alien_fire_rate': 1.5,
     'num_waves': 7,
   },
   4: {
-    'alien_speed': 8,
+    'alien_speed': 5,
     'alien_fire_rate': 1,
     'num_waves': 9,
   },
   5: {
-    'alien_speed': 10,
+    'alien_speed': 8,
     'alien_fire_rate': 0.5,
     'num_waves': 11,
   },
 }
-
-update_aliens = True
 
 # TEXT
 font_name = pygame.font.match_font('arial')
@@ -180,6 +183,14 @@ def set_aliens():
       all_sprites.add(new_alien)
       aliens.add(new_alien)
 
+def set_game_settings(level):
+  global alien_speed, alien_fire_rate, num_waves
+  alien_speed = game_settings[level]['alien_speed']
+  alien_fire_rate = game_settings[level]['alien_fire_rate']
+  num_waves = game_settings[level]['num_waves']
+
+# Function Calls
+set_game_settings(game_level)
 set_aliens()
 
 # GAME LOOP
@@ -193,41 +204,52 @@ while running:
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
       player.fire_bullet()
 
-
   # Update
   all_sprites.update()
   
-  alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True)
+  alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True) # check for alien kills
   for kill in alien_kills:
     player_score += 100
   
-  chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360]
+  chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
   if len(chosen_aliens) == 0:
-    set_aliens()
+    if num_waves != 0: 
+      set_aliens()
+      num_waves -= 1
+    elif num_waves == 0:
+      is_game_over = True
   else:
     aliens.update()
     
-  pygame.sprite.groupcollide(bullets, bombs, True, True)
+  pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
-  if pygame.sprite.spritecollide(player, bombs, True):
+  if pygame.sprite.spritecollide(player, bombs, True): # collisions between player and bombs
     # sleep(0.5)
+    player_lives -= 1
     player_lives = player_lives
+    if player_lives == 0:
+      is_game_over = True
 
   frames += 1
-  if frames % (0.5 * FPS) == 0:
+
+  if frames % (alien_fire_rate * FPS) == 0: # check to see if aliens should fire bombs
     if list(aliens) != []:
       chosen_alien = choice(list(aliens))
       if chosen_alien != None: chosen_alien.drop_bomb() 
-    timer = frames // FPS
+  
+  if frames % 60 == 0: # implementation of timer
+    timer = frames // FPS 
 
   # Draw / Render
   screen.fill(colours.WHITE)
-  if player_lives <= 0:
+  if is_game_over:
     draw_menu(screen)
+    for sprite in all_sprites:
+      sprite.kill()
   else:
     all_sprites.draw(screen)
-    for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}"]):
-      draw_text(screen, text, 18, 135 * (i+1), 20)
+    for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}", f"Level: {game_level}"]):
+      draw_text(screen, text, 18, 108 * (i+1), 20)
 
   # AFTER Drawing Everything, Flip the Display
   pygame.display.flip()
