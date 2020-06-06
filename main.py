@@ -121,15 +121,18 @@ all_sprites.add(player)
 
 # GAME VARIABLES
 is_game_over = False
+
 frames = 0
 timer = 0
-game_level = 5
+
 player_lives = 10
 player_score = 0
 
-alien_speed = 0 
+game_level = 1
+alien_speed = 0
+alien_fire_rate = 0 
 num_waves = 0
-alien_waves = 0
+alien_hit_points = 0
 
 # Game Settings
 game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
@@ -137,26 +140,31 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_speed': 1,
     'alien_fire_rate': 2.5,
     'num_waves': 3,
+    'alien_hit_points': 10
   },
   2: {
     'alien_speed': 2,
     'alien_fire_rate': 2,
     'num_waves': 5,
+    'alien_hit_points': 20
   },
   3: {
     'alien_speed': 4,
     'alien_fire_rate': 1.5,
     'num_waves': 7,
+    'alien_hit_points': 50
   },
   4: {
     'alien_speed': 5,
     'alien_fire_rate': 1,
     'num_waves': 9,
+    'alien_hit_points': 100
   },
   5: {
     'alien_speed': 8,
     'alien_fire_rate': 0.5,
     'num_waves': 11,
+    'alien_hit_points': 150
   },
 }
 
@@ -186,10 +194,11 @@ def set_aliens():
       aliens.add(new_alien)
 
 def set_game_settings(level):
-  global alien_speed, alien_fire_rate, num_waves
+  global alien_speed, alien_fire_rate, num_waves, alien_hit_points
   alien_speed = game_settings[level]['alien_speed']
   alien_fire_rate = game_settings[level]['alien_fire_rate']
   num_waves = game_settings[level]['num_waves']
+  alien_hit_points = game_settings[level]['alien_hit_points']
 
 # Function Calls
 set_game_settings(game_level)
@@ -212,7 +221,7 @@ while running:
   
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True) # check for alien kills
   for kill in alien_kills:
-    player_score += 100
+    player_score += alien_hit_points
   
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
   if len(chosen_aliens) == 0:
