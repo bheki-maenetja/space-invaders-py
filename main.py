@@ -98,7 +98,7 @@ class Alien(pygame.sprite.Sprite):
 
 class MotherShip(Alien):
   def __init__(self, x, y):
-    super(MotherShip, self).__init__(x,y,4)
+    super(MotherShip, self).__init__(x,y,0)
     self.image = pygame.Surface((50, 50))
     self.image.fill(colours.BLACK)
 
@@ -199,9 +199,11 @@ def set_aliens():
       all_sprites.add(new_alien)
       aliens.add(new_alien)
 
-def set_motherships():
-  for i in range(4):
-    new_mothership = MotherShip((i+1) * 108, 30)
+def set_motherships(num_ships):
+  for i in range(num_ships):
+    print((i+1) * (WIDTH // (num_ships+ 1)))
+    new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 50)
+    print(new_mothership.rect.width)
     all_sprites.add(new_mothership)
     
 def set_game_settings(level):
@@ -215,7 +217,7 @@ def set_game_settings(level):
 set_game_settings(game_level)
 # set_aliens()
 # num_waves -= 1
-set_motherships()
+set_motherships(5)
 
 # GAME LOOP
 running = True
