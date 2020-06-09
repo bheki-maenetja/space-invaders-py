@@ -236,6 +236,9 @@ while running:
       running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
       player.fire_bullet()
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+      for alien in aliens:
+        alien.kill()
 
   # Update
   all_sprites.update()
