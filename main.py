@@ -119,7 +119,6 @@ class Bomb(pygame.sprite.Sprite):
 # Sprites and Groups
 all_sprites = pygame.sprite.Group()
 aliens = pygame.sprite.Group()
-motherships = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 bombs = pygame.sprite.Group()
 
@@ -140,6 +139,7 @@ game_level = 1
 alien_speed = 0
 alien_fire_rate = 0 
 num_waves = 0
+num_ships = 0
 alien_hit_points = 0
 
 # Game Settings
@@ -147,31 +147,36 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
   1: {
     'alien_speed': 1,
     'alien_fire_rate': 2.5,
-    'num_waves': 3,
+    'num_waves': 4,
+    'num_ships': 1,
     'alien_hit_points': 10
   },
   2: {
     'alien_speed': 2,
     'alien_fire_rate': 2,
-    'num_waves': 5,
+    'num_waves': 6,
+    'num_ships': 3,
     'alien_hit_points': 20
   },
   3: {
     'alien_speed': 4,
     'alien_fire_rate': 1.5,
-    'num_waves': 7,
+    'num_waves': 8,
+    'num_ships': 5,
     'alien_hit_points': 50
   },
   4: {
     'alien_speed': 5,
     'alien_fire_rate': 1,
-    'num_waves': 9,
+    'num_waves': 10,
+    'num_ships': 7,
     'alien_hit_points': 100
   },
   5: {
     'alien_speed': 8,
     'alien_fire_rate': 0.5,
-    'num_waves': 11,
+    'num_waves': 12,
+    'num_ships': 9,
     'alien_hit_points': 150
   },
 }
@@ -206,20 +211,20 @@ def set_motherships(num_ships):
     # print((i+1) * (WIDTH // (num_ships+ 1)))
     new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60, alien_speed)
     all_sprites.add(new_mothership)
-    motherships.add(new_mothership)
+    aliens.add(new_mothership)
     
 def set_game_settings(level):
-  global alien_speed, alien_fire_rate, num_waves, alien_hit_points
+  global alien_speed, alien_fire_rate, num_waves, num_ships, alien_hit_points
   alien_speed = game_settings[level]['alien_speed']
   alien_fire_rate = game_settings[level]['alien_fire_rate']
   num_waves = game_settings[level]['num_waves']
+  num_ships = game_settings[level]['num_ships']
   alien_hit_points = game_settings[level]['alien_hit_points']
 
 # Function Calls
 set_game_settings(game_level)
-# set_aliens()
-# num_waves -= 1
-set_motherships(7)
+set_aliens()
+num_waves -= 1
 
 # GAME LOOP
 running = True
@@ -240,16 +245,19 @@ while running:
     player_score += alien_hit_points
   
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
-  # if len(chosen_aliens) == 0:
-  #   if num_waves == 0 and game_level == 5 and list(aliens) == []:
-  #     is_game_over = True
-  #   elif num_waves == 0 and list(aliens) == []:
-  #     sleep(1)
-  #     game_level += 1
-  #     set_game_settings(game_level)
-  #   elif num_waves != 0: 
-  #     set_aliens()
-  #     num_waves -= 1
+  if len(chosen_aliens) == 0:
+    if num_waves == 0 and game_level == 5 and list(aliens) == []:
+      is_game_over = True
+    elif num_waves == 0 and list(aliens) == []:
+      sleep(0.5)
+      game_level += 1
+      set_game_settings(game_level)
+    elif num_waves == 1:
+      set_motherships(num_ships)
+      num_waves -= 1
+    elif num_waves != 0: 
+      set_aliens()
+      num_waves -= 1
     
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
@@ -266,9 +274,6 @@ while running:
     if list(aliens) != []:
       chosen_alien = choice(list(aliens))
       if chosen_alien != None: chosen_alien.drop_bomb()
-    if list(motherships) != []:
-      chosen_ship = choice(list(motherships))
-      if chosen_ship != None: chosen_ship.drop_bomb() 
   
   if frames % 60 == 0: # implementation of timer
     timer = frames // FPS 
