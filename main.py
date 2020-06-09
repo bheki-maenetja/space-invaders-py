@@ -119,6 +119,7 @@ class Bomb(pygame.sprite.Sprite):
 # Sprites and Groups
 all_sprites = pygame.sprite.Group()
 aliens = pygame.sprite.Group()
+motherships = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 bombs = pygame.sprite.Group()
 
@@ -202,9 +203,10 @@ def set_aliens():
 
 def set_motherships(num_ships):
   for i in range(num_ships):
-    print((i+1) * (WIDTH // (num_ships+ 1)))
+    # print((i+1) * (WIDTH // (num_ships+ 1)))
     new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60, alien_speed)
     all_sprites.add(new_mothership)
+    motherships.add(new_mothership)
     
 def set_game_settings(level):
   global alien_speed, alien_fire_rate, num_waves, alien_hit_points
@@ -263,7 +265,10 @@ while running:
   if frames % (alien_fire_rate * FPS) == 0: # check to see if aliens should fire bombs
     if list(aliens) != []:
       chosen_alien = choice(list(aliens))
-      if chosen_alien != None: chosen_alien.drop_bomb() 
+      if chosen_alien != None: chosen_alien.drop_bomb()
+    if list(motherships) != []:
+      chosen_ship = choice(list(motherships))
+      if chosen_ship != None: chosen_ship.drop_bomb() 
   
   if frames % 60 == 0: # implementation of timer
     timer = frames // FPS 
