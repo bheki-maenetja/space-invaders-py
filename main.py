@@ -98,8 +98,8 @@ class Alien(pygame.sprite.Sprite):
     bombs.add(new_bomb)
 
 class MotherShip(Alien):
-  def __init__(self, x, y, speed):
-    super(MotherShip, self).__init__(x,y,50,50,speed,60)
+  def __init__(self, x, y, speed=0):
+    super(MotherShip, self).__init__(x,y,50,50,5,60)
     self.image = pygame.Surface((50, 50))
     self.image.fill(choice(colours.ALL_COLOURS)[1])
 
@@ -155,28 +155,28 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_speed': 2,
     'alien_fire_rate': 2,
     'num_waves': 6,
-    'num_ships': 3,
+    'num_ships': 2,
     'alien_hit_points': 20
   },
   3: {
     'alien_speed': 4,
     'alien_fire_rate': 1.5,
     'num_waves': 8,
-    'num_ships': 5,
+    'num_ships': 3,
     'alien_hit_points': 50
   },
   4: {
     'alien_speed': 5,
     'alien_fire_rate': 1,
     'num_waves': 10,
-    'num_ships': 7,
+    'num_ships': 4,
     'alien_hit_points': 100
   },
   5: {
     'alien_speed': 8,
     'alien_fire_rate': 0.5,
     'num_waves': 12,
-    'num_ships': 9,
+    'num_ships': 5,
     'alien_hit_points': 150
   },
 }
@@ -209,7 +209,7 @@ def set_aliens():
 def set_motherships(num_ships):
   for i in range(num_ships):
     # print((i+1) * (WIDTH // (num_ships+ 1)))
-    new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60, alien_speed)
+    new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60)
     all_sprites.add(new_mothership)
     aliens.add(new_mothership)
     
