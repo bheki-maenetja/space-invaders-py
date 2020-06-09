@@ -74,18 +74,19 @@ class Bullet(pygame.sprite.Sprite):
       self.kill()
 
 class Alien(pygame.sprite.Sprite):
-  def __init__(self, x, y, width, height,speed):
+  def __init__(self, x=0, y=0, width=20, height=20, speed=1, v_shift=30):
     super(Alien, self).__init__()
     self.image = pygame.Surface((width, height))
     self.image.fill(choice(colours.ALL_COLOURS)[1])
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = speed
+    self.v_shift = v_shift
     # print(self.rect.x, self.rect.y)
 
   def update(self):
     if self.rect.left < 0 or self.rect.right > WIDTH:
       self.speed = -self.speed
-      self.rect.move_ip(self.speed, 30)
+      self.rect.move_ip(self.speed, self.v_shift)
       return
     if self.rect.y > HEIGHT:
       self.kill()
@@ -97,10 +98,10 @@ class Alien(pygame.sprite.Sprite):
     bombs.add(new_bomb)
 
 class MotherShip(Alien):
-  def __init__(self, x, y):
-    super(MotherShip, self).__init__(x,y,50,50,0)
+  def __init__(self, x, y, speed):
+    super(MotherShip, self).__init__(x,y,50,50,speed,60)
     self.image = pygame.Surface((50, 50))
-    self.image.fill(colours.BLACK)
+    self.image.fill(choice(colours.ALL_COLOURS)[1])
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
@@ -195,14 +196,14 @@ def draw_menu(screen):
 def set_aliens():
   for i in range(60, 301, 60):
     for j in range(20, WIDTH, 40):
-      new_alien = Alien(j, i, 20, 20, alien_speed)
+      new_alien = Alien(x=j, y=i, speed=alien_speed)
       all_sprites.add(new_alien)
       aliens.add(new_alien)
 
 def set_motherships(num_ships):
   for i in range(num_ships):
     print((i+1) * (WIDTH // (num_ships+ 1)))
-    new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60)
+    new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60, alien_speed)
     all_sprites.add(new_mothership)
     
 def set_game_settings(level):
