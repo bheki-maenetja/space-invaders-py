@@ -74,13 +74,14 @@ class Bullet(pygame.sprite.Sprite):
       self.kill()
 
 class Alien(pygame.sprite.Sprite):
-  def __init__(self, x=0, y=0, width=20, height=20, speed=1, v_shift=30):
+  def __init__(self, x=0, y=0, width=20, height=20, speed=1, v_shift=30, lives=1):
     super(Alien, self).__init__()
     self.image = pygame.Surface((width, height))
     self.image.fill(choice(colours.ALL_COLOURS)[1])
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = speed
     self.v_shift = v_shift
+    self.lives = lives
     # print(self.rect.x, self.rect.y)
 
   def update(self):
@@ -96,6 +97,10 @@ class Alien(pygame.sprite.Sprite):
     new_bomb = Bomb(self.rect.centerx, self.rect.bottom)
     all_sprites.add(new_bomb)
     bombs.add(new_bomb)
+
+  def take_hit(self):
+    self.lives -= 1
+    if self.lives == 0: self.kill()
 
 class MotherShip(Alien):
   def __init__(self, x, y, speed=0):
@@ -149,6 +154,7 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_fire_rate': 2.5,
     'num_waves': 4,
     'num_ships': 1,
+    'mothership_lives': 3,
     'alien_hit_points': 10
   },
   2: {
@@ -156,6 +162,7 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_fire_rate': 2,
     'num_waves': 6,
     'num_ships': 2,
+    'mothership_lives': 5,
     'alien_hit_points': 20
   },
   3: {
@@ -163,6 +170,7 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_fire_rate': 1.5,
     'num_waves': 8,
     'num_ships': 3,
+    'mothership_lives': 7,
     'alien_hit_points': 50
   },
   4: {
@@ -170,6 +178,7 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_fire_rate': 1,
     'num_waves': 10,
     'num_ships': 4,
+    'mothership_lives': 9,
     'alien_hit_points': 100
   },
   5: {
@@ -177,6 +186,7 @@ game_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
     'alien_fire_rate': 0.5,
     'num_waves': 12,
     'num_ships': 5,
+    'mothership_lives': 11,
     'alien_hit_points': 150
   },
 }
@@ -208,7 +218,6 @@ def set_aliens():
 
 def set_motherships(num_ships):
   for i in range(num_ships):
-    # print((i+1) * (WIDTH // (num_ships+ 1)))
     new_mothership = MotherShip((i+1) * (WIDTH // (num_ships+ 1)), 60)
     all_sprites.add(new_mothership)
     aliens.add(new_mothership)
@@ -243,8 +252,10 @@ while running:
   # Update
   all_sprites.update()
   
-  alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, True) # check for alien kills
-  for kill in alien_kills:
+  alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, False) # check for alien kills
+  # print(alien_kills)
+  for alien in alien_kills.values():
+    alien[0].take_hit()
     player_score += alien_hit_points
   
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
