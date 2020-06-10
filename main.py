@@ -256,7 +256,6 @@ while running:
   all_sprites.update()
   
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, False) # check for alien kills
-  # print(alien_kills)
   for alien in alien_kills.values():
     alien[0].take_hit()
     player_score += alien_hit_points
@@ -284,6 +283,9 @@ while running:
     player_lives = player_lives
     if player_lives == 0:
       is_game_over = True
+  elif pygame.sprite.spritecollide(player, aliens, False):
+    sleep(0.25)
+    is_game_over = True
 
   frames += 1
 
