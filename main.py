@@ -139,7 +139,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 10
+player_lives = 1
 player_score = 0
 
 alien_speed = 0
@@ -233,6 +233,20 @@ def set_game_settings(level):
   mothership_lives = game_settings[level]['mothership_lives']
   alien_hit_points = game_settings[level]['alien_hit_points']
 
+def reset_game():
+  global frames, timer, game_level, player_lives, player_score, alien_speed, alien_fire_rate, num_waves, num_ships, mothership_lives, alien_hit_points
+  frames = 0
+  timer = 0
+  game_level = 1
+  player_lives = 10
+  player_score = 0
+  alien_speed = 0
+  alien_fire_rate = 0 
+  num_waves = 0
+  num_ships = 0
+  mothership_lives = 0
+  alien_hit_points = 0
+
 # Function Calls
 set_game_settings(game_level)
 set_aliens()
@@ -246,13 +260,15 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT: # check for closing the window
       running = False
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not is_game_over:
       player.fire_bullet()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
       for alien in aliens:
         alien.kill()
 
   # Update
+  if is_game_over: continue # if the game is not in play move on
+
   all_sprites.update()
   
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, False) # check for alien kills
@@ -265,7 +281,6 @@ while running:
     if num_waves == 0 and game_level == 5 and list(aliens) == []:
       is_game_over = True
     elif num_waves == 0 and list(aliens) == []:
-      sleep(0.5)
       game_level += 1
       set_game_settings(game_level)
     elif num_waves == 1:
@@ -278,9 +293,9 @@ while running:
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
   if pygame.sprite.spritecollide(player, bombs, True): # collisions between player and bombs
-    # sleep(0.5)
-    # player_lives -= 1
-    player_lives = player_lives
+    sleep(0.2)
+    player_lives -= 1
+    # player_lives = player_lives
     if player_lives == 0:
       is_game_over = True
   elif pygame.sprite.spritecollide(player, aliens, False):
@@ -303,6 +318,7 @@ while running:
     draw_menu(screen)
     for sprite in all_sprites:
       sprite.kill()
+    reset_game()
   else:
     all_sprites.draw(screen)
     for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}", f"Level: {game_level}"]):
