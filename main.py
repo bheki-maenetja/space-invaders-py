@@ -83,7 +83,6 @@ class Alien(pygame.sprite.Sprite):
     self.speed = speed
     self.v_shift = v_shift
     self.lives = lives
-    # print(self.rect.x, self.rect.y)
 
   def update(self):
     if self.rect.left < 0 or self.rect.right > WIDTH:
