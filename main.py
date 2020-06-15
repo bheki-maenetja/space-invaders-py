@@ -221,6 +221,13 @@ def reset_game():
   mothership_lives = 0
   alien_hit_points = 0
 
+def set_game_stats():
+  gameplay_stats['games_played'] += 1
+  gameplay_stats['total_score'] += player_score
+  gameplay_stats['high_score'] = player_score if player_score > gameplay_stats['high_score'] else gameplay_stats['high_score']
+  gameplay_stats['lives_lost'] += 10 - player_lives
+  gameplay_stats['total_time'] += timer
+
 # Function Calls
 set_game_settings(game_level)
 set_aliens()
@@ -236,6 +243,7 @@ while running:
       running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not is_game_over:
       player.fire_bullet()
+      gameplay_stats['shots_fired'] += 1
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
       for alien in aliens:
         alien.kill()
@@ -249,6 +257,10 @@ while running:
   for alien in alien_kills.values():
     alien[0].take_hit()
     player_score += alien_hit_points
+    if num_waves == 0:
+      gameplay_stats['mothership_kills'] += 1
+    else:
+      gameplay_stats['alien_kills'] += 1
   
   chosen_aliens = [alien for alien in aliens if alien.rect.centery < 360] # check to see if aliens should be spawned
   if len(chosen_aliens) == 0:
@@ -259,9 +271,11 @@ while running:
       set_game_settings(game_level)
     elif num_waves == 1:
       set_motherships(num_ships)
+      gameplay_stats['waves_fought'] += 1
       num_waves -= 1
     elif num_waves != 0: 
       set_aliens()
+      gameplay_stats['waves_fought'] += 1
       num_waves -= 1
     
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
@@ -269,7 +283,6 @@ while running:
   if pygame.sprite.spritecollide(player, bombs, True): # collisions between player and bombs
     sleep(0.2)
     player_lives -= 1
-    # player_lives = player_lives
     if player_lives == 0:
       is_game_over = True
   elif pygame.sprite.spritecollide(player, aliens, False):
@@ -292,7 +305,9 @@ while running:
     draw_menu(screen)
     for sprite in all_sprites:
       sprite.kill()
+    set_game_stats()
     reset_game()
+    print(gameplay_stats)
   else:
     all_sprites.draw(screen)
     for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}", f"Level: {game_level}"]):
