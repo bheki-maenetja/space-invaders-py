@@ -152,6 +152,21 @@ alien_hit_points = 0
 # Game Settings
 game_settings = game_settings.main_settings
 
+# Gameplay Stats
+gameplay_stats = {
+  'games_played': 0,
+  'total_score': 0,
+  'high_score': 0,
+  'lives_lost': 0,
+  'alien_kills': 0,
+  'mothership_kills': 0,
+  'waves_fought': 0,
+  'shots_fired': 0,
+  'shortest_game': 0,
+  'longest_game': 0,
+  'total_time': 0,
+}
+
 # TEXT
 font_name = pygame.font.match_font('arial')
 
