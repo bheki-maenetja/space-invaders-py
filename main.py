@@ -182,7 +182,9 @@ def draw_menu(screen):
   menu_surf = pygame.Surface((WIDTH, HEIGHT))
   menu_surf.fill(colours.YELLOW)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
-  draw_text(menu_surf, 'GAME OVER', 96, 270, 100)
+  draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
+  draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2)
+  draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2 + 50)
   screen.blit(menu_surf, menu_rect)
 
 # UTILITY FUNCTIONS
@@ -303,10 +305,10 @@ while running:
   # Draw / Render
   screen.fill(colours.WHITE)
   if is_game_over:
-    draw_menu(screen)
     for sprite in all_sprites:
       sprite.kill()
     set_game_stats()
+    draw_menu(screen)
     reset_game()
     print(gameplay_stats)
   else:
