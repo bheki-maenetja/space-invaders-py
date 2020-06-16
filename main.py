@@ -139,7 +139,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 10
+player_lives = 1
 player_score = 0
 
 alien_speed = 0
@@ -179,9 +179,10 @@ def draw_text(surf, text, size, x, y):
 
 # SCREENS
 def draw_menu(screen):
-  menu_surf = pygame.Surface((WIDTH -100, HEIGHT - 100))
-  menu_surf.fill(colours.BLUE)
+  menu_surf = pygame.Surface((WIDTH, HEIGHT))
+  menu_surf.fill(colours.YELLOW)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
+  draw_text(menu_surf, 'GAME OVER', 96, 270, 100)
   screen.blit(menu_surf, menu_rect)
 
 # UTILITY FUNCTIONS
