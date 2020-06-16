@@ -183,9 +183,9 @@ def draw_menu(screen):
   menu_surf.fill(colours.YELLOW)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
   draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
-  draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2)
-  draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2 + 50)
-  draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 100)
+  draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2 - 50)
+  draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
+  draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
   screen.blit(menu_surf, menu_rect)
 
 # UTILITY FUNCTIONS
