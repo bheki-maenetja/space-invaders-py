@@ -137,7 +137,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 1
+player_lives = 10
 player_score = 0
 
 alien_speed = 0
