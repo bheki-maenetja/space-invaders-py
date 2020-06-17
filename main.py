@@ -186,6 +186,8 @@ def draw_menu(screen):
   draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2 - 50)
   draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
   draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
+  pygame.draw.rect(menu_surf, colours.GREEN, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
+  draw_text(menu_surf, f"PLAY AGAIN", 36, WIDTH/2, HEIGHT/2 + 125)
   screen.blit(menu_surf, menu_rect)
 
 # UTILITY FUNCTIONS
