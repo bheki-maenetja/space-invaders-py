@@ -127,9 +127,7 @@ aliens = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 bombs = pygame.sprite.Group()
 
-player = Player()
-
-all_sprites.add(player)
+player = None
 
 # GAME VARIABLES
 is_game_over = False
@@ -234,10 +232,16 @@ def set_game_stats():
   gameplay_stats['lives_lost'] += 10 - player_lives
   gameplay_stats['total_time'] += timer
 
+def start_game():
+  global num_waves, player
+  set_game_settings(game_level)
+  set_aliens()
+  num_waves -= 1
+  player = Player()
+  all_sprites.add(player)
+  
 # Function Calls
-set_game_settings(game_level)
-set_aliens()
-num_waves -= 1
+start_game()
 
 # GAME LOOP
 running = True
@@ -251,9 +255,9 @@ while running:
       player.fire_bullet()
       gameplay_stats['shots_fired'] += 1
     if event.type == pygame.MOUSEBUTTONDOWN and is_game_over:
-      print(event.pos)
       if (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 100 <= event.pos[1] <= HEIGHT/2 + 150):
-        print('Clicked button')
+        is_game_over = False
+        start_game()
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
       for alien in aliens:
         alien.kill()
