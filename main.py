@@ -137,7 +137,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 1
+player_lives = 10
 player_score = 0
 
 alien_speed = 0
@@ -329,7 +329,6 @@ while running:
     set_game_stats()
     draw_menu(screen)
     reset_game()
-    print(gameplay_stats)
   else:
     all_sprites.draw(screen)
     for i, text in enumerate([f"Time: {timer}s", f"Score: {player_score}", f"Lives: {player_lives}", f"Level: {game_level}"]):
