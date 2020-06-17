@@ -250,6 +250,10 @@ while running:
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not is_game_over:
       player.fire_bullet()
       gameplay_stats['shots_fired'] += 1
+    if event.type == pygame.MOUSEBUTTONDOWN and is_game_over:
+      print(event.pos)
+      if (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 100 <= event.pos[1] <= HEIGHT/2 + 150):
+        print('Clicked button')
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
       for alien in aliens:
         alien.kill()
