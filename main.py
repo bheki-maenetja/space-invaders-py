@@ -137,7 +137,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 10
+player_lives = 1
 player_score = 0
 
 alien_speed = 0
@@ -180,12 +180,18 @@ def draw_menu(screen):
   menu_surf = pygame.Surface((WIDTH, HEIGHT))
   menu_surf.fill(colours.YELLOW)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
+
   draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
   draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2 - 50)
   draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
   draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
+
   pygame.draw.rect(menu_surf, colours.GREEN, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
   draw_text(menu_surf, f"PLAY AGAIN", 36, WIDTH/2, HEIGHT/2 + 125)
+
+  pygame.draw.rect(menu_surf, colours.RED, (WIDTH/2 - 125, HEIGHT/2 + 175, 250, 50))
+  draw_text(menu_surf, f"QUIT", 36, WIDTH/2, HEIGHT/2 + 200)
+
   screen.blit(menu_surf, menu_rect)
 
 # UTILITY FUNCTIONS
@@ -258,6 +264,8 @@ while running:
       if (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 100 <= event.pos[1] <= HEIGHT/2 + 150):
         is_game_over = False
         start_game()
+      elif (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 175 <= event.pos[1] <= HEIGHT/2 + 225):
+        running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
       for alien in aliens:
         alien.kill()
