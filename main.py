@@ -30,6 +30,10 @@ clock = pygame.time.Clock()
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
 
+background_image = pygame.image.load(path.join(img_dir, 'background.jpg')).convert()
+screen_background = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+background_rect = screen_background.get_rect()
+
 player_images = [
   'playerShip2_blue.png',
   'playerShip2_green.png',
@@ -99,7 +103,7 @@ class Bullet(pygame.sprite.Sprite):
       self.kill()
 
 class Alien(pygame.sprite.Sprite):
-  def __init__(self, x=0, y=0, width=30, height=30, speed=1, v_shift=30, lives=1):
+  def __init__(self, x=0, y=0, width=25, height=25, speed=1, v_shift=30, lives=1):
     super(Alien, self).__init__()
     # self.image = pygame.Surface((width, height))
     # self.image.fill(choice(colours.ALL_COLOURS)[1])
@@ -198,7 +202,7 @@ font_name = pygame.font.match_font('arial')
 
 def draw_text(surf, text, size, x, y):
   font = pygame.font.Font(font_name, size)
-  text_surf = font.render(text, True, colours.BLACK)
+  text_surf = font.render(text, True, colours.WHITE)
   text_rect = text_surf.get_rect()
   text_rect.center = (x,y)
   surf.blit(text_surf, text_rect)
@@ -206,8 +210,9 @@ def draw_text(surf, text, size, x, y):
 # SCREENS
 def draw_menu(screen):
   menu_surf = pygame.Surface((WIDTH, HEIGHT))
-  menu_surf.fill(colours.YELLOW)
+  menu_surf.fill(colours.BLUE)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
+  menu_surf.blit(screen_background, background_rect)
 
   draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
   draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2 - 50)
@@ -351,6 +356,7 @@ while running:
 
   # Draw / Render
   screen.fill(colours.WHITE)
+  screen.blit(screen_background, background_rect)
   if is_game_over:
     for sprite in all_sprites:
       sprite.kill()
