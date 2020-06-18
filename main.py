@@ -38,7 +38,7 @@ player_images = [
 ]
 
 alien_images = [
-  'shipBeige_manned.png',
+  'shipPink_manned.png',
   'shipGreen_manned.png',
   'shipYellow_manned.png'
 ]
@@ -99,7 +99,7 @@ class Bullet(pygame.sprite.Sprite):
       self.kill()
 
 class Alien(pygame.sprite.Sprite):
-  def __init__(self, x=0, y=0, width=20, height=20, speed=1, v_shift=30, lives=1):
+  def __init__(self, x=0, y=0, width=30, height=30, speed=1, v_shift=30, lives=1):
     super(Alien, self).__init__()
     # self.image = pygame.Surface((width, height))
     # self.image.fill(choice(colours.ALL_COLOURS)[1])
