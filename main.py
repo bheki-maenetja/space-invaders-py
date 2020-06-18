@@ -165,7 +165,6 @@ class Bomb(pygame.sprite.Sprite):
     super(Bomb, self).__init__()
     # self.image = pygame.Surface((10, 20))
     # self.image.fill(colours.RED)
-    print(bomb_images)
     self.image = pygame.transform.scale(choice(bomb_images), (15, 30))
     self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(x,y))
