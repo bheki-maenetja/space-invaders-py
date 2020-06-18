@@ -192,7 +192,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 1
+player_lives = 10
 player_score = 0
 
 alien_speed = 0
@@ -242,7 +242,7 @@ def draw_menu(screen):
   draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
   draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
 
-  pygame.draw.rect(menu_surf, colours.BLUE, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
+  pygame.draw.rect(menu_surf, colours.TEAL, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
   draw_text(menu_surf, f"PLAY AGAIN", 36, WIDTH/2, HEIGHT/2 + 125)
 
   pygame.draw.rect(menu_surf, colours.RED, (WIDTH/2 - 125, HEIGHT/2 + 175, 250, 50))
