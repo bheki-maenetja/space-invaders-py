@@ -38,7 +38,7 @@ player_images = [
 ]
 
 alien_images = [
-  'shipBlue_manned.png',
+  'shipBeige_manned.png',
   'shipGreen_manned.png',
   'shipYellow_manned.png'
 ]
@@ -48,6 +48,8 @@ for i in range(len(player_images)):
 
 for i in range(len(alien_images)):
   alien_images[i] = pygame.image.load(path.join(img_dir, alien_images[i])).convert()
+
+mothership_image = pygame.image.load(path.join(img_dir, 'motherShip.png')).convert()
 
 # SETUP SPRITES
 
@@ -128,9 +130,11 @@ class Alien(pygame.sprite.Sprite):
 
 class MotherShip(Alien):
   def __init__(self, x, y, lives):
-    super(MotherShip, self).__init__(x,y,50,50,5,60,lives)
-    self.image = pygame.Surface((50, 50))
-    self.image.fill(choice(colours.ALL_COLOURS)[1])
+    super(MotherShip, self).__init__(x,y,69,50,5,60,lives)
+    # self.image = pygame.Surface((50, 50))
+    # self.image.fill(choice(colours.ALL_COLOURS)[1])
+    self.image = pygame.transform.scale(mothership_image, (69, 50))
+    self.image.set_colorkey(colours.BLACK)
 
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
