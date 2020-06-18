@@ -37,8 +37,17 @@ player_images = [
   'playerShip2_red.png',
 ]
 
+alien_images = [
+  'shipBlue_manned.png',
+  'shipGreen_manned.png',
+  'shipYellow_manned.png'
+]
+
 for i in range(len(player_images)):
   player_images[i] = pygame.image.load(path.join(img_dir, player_images[i])).convert()
+
+for i in range(len(alien_images)):
+  alien_images[i] = pygame.image.load(path.join(img_dir, alien_images[i])).convert()
 
 # SETUP SPRITES
 
@@ -52,7 +61,6 @@ class Player(pygame.sprite.Sprite):
     self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(WIDTH / 2, HEIGHT - 55))
     self.radius = 20
-    pygame.draw.circle(self.image, colours.BLUE, self.rect.center, self.radius)
     self.speed = 5
   
   def update(self):
@@ -91,8 +99,10 @@ class Bullet(pygame.sprite.Sprite):
 class Alien(pygame.sprite.Sprite):
   def __init__(self, x=0, y=0, width=20, height=20, speed=1, v_shift=30, lives=1):
     super(Alien, self).__init__()
-    self.image = pygame.Surface((width, height))
-    self.image.fill(choice(colours.ALL_COLOURS)[1])
+    # self.image = pygame.Surface((width, height))
+    # self.image.fill(choice(colours.ALL_COLOURS)[1])
+    self.image = pygame.transform.scale(choice(alien_images), (width, height))
+    self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = speed
     self.v_shift = v_shift
