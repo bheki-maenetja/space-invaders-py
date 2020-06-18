@@ -30,14 +30,26 @@ clock = pygame.time.Clock()
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
 
+player_images = [
+  'playerShip2_blue.png',
+  'playerShip2_green.png',
+  'playerShip2_orange.png',
+  'playerShip2_red.png',
+]
+
+for i in range(len(player_images)):
+  player_images[i] = pygame.image.load(path.join(img_dir, player_images[i])).convert()
+
 # SETUP SPRITES
 
 # Sprite Classes
 class Player(pygame.sprite.Sprite):
   def __init__(self):
     super(Player, self).__init__()
-    self.image = pygame.Surface((50, 50))
-    self.image.fill(colours.RED)
+    # self.image = pygame.Surface((50, 50))
+    # self.image.fill(colours.RED)
+    self.image = pygame.transform.scale(choice(player_images), (75, 50))
+    self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(WIDTH / 2, HEIGHT - 55))
     self.speed = 5
   
