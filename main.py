@@ -51,6 +51,8 @@ class Player(pygame.sprite.Sprite):
     self.image = pygame.transform.scale(choice(player_images), (75, 50))
     self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(WIDTH / 2, HEIGHT - 55))
+    self.radius = 20
+    pygame.draw.circle(self.image, colours.BLUE, self.rect.center, self.radius)
     self.speed = 5
   
   def update(self):
@@ -314,7 +316,7 @@ while running:
     
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
-  if pygame.sprite.spritecollide(player, bombs, True): # collisions between player and bombs
+  if pygame.sprite.spritecollide(player, bombs, True, pygame.sprite.collide_circle): # collisions between player and bombs
     sleep(0.2)
     player_lives -= 1
     if player_lives == 0:
