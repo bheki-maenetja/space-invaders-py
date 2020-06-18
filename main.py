@@ -34,12 +34,16 @@ background_image = pygame.image.load(path.join(img_dir, 'background.jpg')).conve
 screen_background = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 background_rect = screen_background.get_rect()
 
-player_images = [
-  'playerShip2_blue.png',
-  'playerShip2_green.png',
-  'playerShip2_orange.png',
-  'playerShip2_red.png',
+player_image_names = [
+  ('playerShip2_blue.png', 'laserBlue14.png'),
+  ('playerShip2_green.png', 'laserGreen06.png'),
+  ('playerShip2_orange.png', 'laserRed14.png'),
+  ('playerShip2_red.png', 'laserRed14.png')
 ]
+
+player_images = []
+
+laser_image = None
 
 alien_images = [
   'shipPink_manned.png',
@@ -47,8 +51,8 @@ alien_images = [
   'shipYellow_manned.png'
 ]
 
-for i in range(len(player_images)):
-  player_images[i] = pygame.image.load(path.join(img_dir, player_images[i])).convert()
+for name in player_image_names:
+  player_images.append(pygame.image.load(path.join(img_dir, name[0])).convert())
 
 for i in range(len(alien_images)):
   alien_images[i] = pygame.image.load(path.join(img_dir, alien_images[i])).convert()
@@ -60,10 +64,14 @@ mothership_image = pygame.image.load(path.join(img_dir, 'motherShip.png')).conve
 # Sprite Classes
 class Player(pygame.sprite.Sprite):
   def __init__(self):
+    global laser_image
     super(Player, self).__init__()
     # self.image = pygame.Surface((50, 50))
     # self.image.fill(colours.RED)
-    self.image = pygame.transform.scale(choice(player_images), (75, 50))
+    image_choice = choice(player_images)
+    laser_image_name = player_image_names[player_images.index(image_choice)][1]
+    laser_image = pygame.image.load(path.join(img_dir, laser_image_name)).convert()
+    self.image = pygame.transform.scale(image_choice, (75, 50))
     self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(WIDTH / 2, HEIGHT - 55))
     self.radius = 20
@@ -92,8 +100,10 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
   def __init__(self, x, y):
     super(Bullet, self).__init__()
-    self.image = pygame.Surface((5, 30))
-    self.image.fill(colours.BLACK)
+    # self.image = pygame.Surface((5, 30))
+    # self.image.fill(colours.BLACK)
+    self.image = pygame.transform.scale(laser_image, (8,30))
+    self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = 12
   
