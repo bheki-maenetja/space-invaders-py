@@ -51,11 +51,21 @@ alien_images = [
   'shipYellow_manned.png'
 ]
 
+bomb_images = [
+  'bombBlue_6.png',
+  'bombGreen_5.png',
+  'bombRed_6.png',
+  'bombYellow_4.png',
+]
+
 for name in player_image_names:
   player_images.append(pygame.image.load(path.join(img_dir, name[0])).convert())
 
 for i in range(len(alien_images)):
   alien_images[i] = pygame.image.load(path.join(img_dir, alien_images[i])).convert()
+
+for i in range(len(bomb_images)):
+  bomb_images[i] = pygame.image.load(path.join(img_dir, bomb_images[i])).convert()
 
 mothership_image = pygame.image.load(path.join(img_dir, 'motherShip.png')).convert()
 
@@ -153,8 +163,11 @@ class MotherShip(Alien):
 class Bomb(pygame.sprite.Sprite):
   def __init__(self, x, y):
     super(Bomb, self).__init__()
-    self.image = pygame.Surface((10, 20))
-    self.image.fill(colours.RED)
+    # self.image = pygame.Surface((10, 20))
+    # self.image.fill(colours.RED)
+    print(bomb_images)
+    self.image = pygame.transform.scale(choice(bomb_images), (15, 30))
+    self.image.set_colorkey(colours.BLACK)
     self.rect = self.image.get_rect(center=(x,y))
     self.speed = 10
   
@@ -179,7 +192,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 10
+player_lives = 1
 player_score = 0
 
 alien_speed = 0
@@ -229,7 +242,7 @@ def draw_menu(screen):
   draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
   draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
 
-  pygame.draw.rect(menu_surf, colours.GREEN, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
+  pygame.draw.rect(menu_surf, colours.BLUE, (WIDTH/2 - 125, HEIGHT/2 + 100, 250, 50))
   draw_text(menu_surf, f"PLAY AGAIN", 36, WIDTH/2, HEIGHT/2 + 125)
 
   pygame.draw.rect(menu_surf, colours.RED, (WIDTH/2 - 125, HEIGHT/2 + 175, 250, 50))
