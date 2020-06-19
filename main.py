@@ -27,6 +27,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Invaders")
 clock = pygame.time.Clock()
 
+# LOAD ALL SOUND EFFECTS
+audio_dir = path.join(path.dirname(__file__), 'audio')
+
+aud_alien_kill = pygame.mixer.Sound(path.join(audio_dir, 'alien-kill.mp3'))
+aud_bomb_hit = pygame.mixer.Sound(path.join(audio_dir, 'bomb-hit.mp3'))
+aud_bomb_launch = pygame.mixer.Sound(path.join(audio_dir, 'bomb-launch.mp3'))
+aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.mp3'))
+
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
 
