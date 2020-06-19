@@ -35,6 +35,7 @@ aud_bomb_hit = pygame.mixer.Sound(path.join(audio_dir, 'bomb-hit.wav'))
 aud_bomb_launch = pygame.mixer.Sound(path.join(audio_dir, 'bomb-launch.wav'))
 aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.wav'))
 
+gameplay_music = pygame.mixer.Sound(path.join(audio_dir, 'gameplay-music.wav'))
 menu_music = pygame.mixer.Sound(path.join(audio_dir, 'menu-music.wav'))
 
 # LOAD ALL SPRITE IMAGES
@@ -201,7 +202,7 @@ timer = 0
 
 game_level = 1
 
-player_lives = 1
+player_lives = 10
 player_score = 0
 
 alien_speed = 0
@@ -241,7 +242,9 @@ def draw_text(surf, text, size, x, y):
 
 # SCREENS
 def draw_menu(screen):
+  gameplay_music.stop()
   menu_music.play(loops=-1)
+
   menu_surf = pygame.Surface((WIDTH, HEIGHT))
   menu_surf.fill(colours.BLUE)
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
@@ -311,6 +314,7 @@ def start_game():
   num_waves -= 1
   player = Player()
   all_sprites.add(player)
+  gameplay_music.play(loops=-1)
   
 # Function Calls
 start_game()
