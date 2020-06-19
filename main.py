@@ -30,10 +30,10 @@ clock = pygame.time.Clock()
 # LOAD ALL SOUND EFFECTS
 audio_dir = path.join(path.dirname(__file__), 'audio')
 
-aud_alien_kill = pygame.mixer.Sound(path.join(audio_dir, 'alien-kill.mp3'))
-aud_bomb_hit = pygame.mixer.Sound(path.join(audio_dir, 'bomb-hit.mp3'))
-aud_bomb_launch = pygame.mixer.Sound(path.join(audio_dir, 'bomb-launch.mp3'))
-aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.mp3'))
+aud_alien_kill = pygame.mixer.Sound(path.join(audio_dir, 'alien-kill.wav'))
+aud_bomb_hit = pygame.mixer.Sound(path.join(audio_dir, 'bomb-hit.wav'))
+aud_bomb_launch = pygame.mixer.Sound(path.join(audio_dir, 'bomb-launch.wav'))
+aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.wav'))
 
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
@@ -322,6 +322,7 @@ while running:
       running = False
     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not is_game_over:
       player.fire_bullet()
+      aud_laser_blast.play()
       gameplay_stats['shots_fired'] += 1
     if event.type == pygame.MOUSEBUTTONDOWN and is_game_over:
       if (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 100 <= event.pos[1] <= HEIGHT/2 + 150):
