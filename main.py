@@ -342,6 +342,7 @@ while running:
   alien_kills = pygame.sprite.groupcollide(bullets, aliens, True, False) # check for alien kills
   for alien in alien_kills.values():
     alien[0].take_hit()
+    aud_alien_kill.play()
     player_score += alien_hit_points
     if num_waves == 0:
       gameplay_stats['mothership_kills'] += 1
@@ -367,7 +368,8 @@ while running:
   pygame.sprite.groupcollide(bullets, bombs, True, True) # collisions between bullets and bombs
 
   if pygame.sprite.spritecollide(player, bombs, True, pygame.sprite.collide_circle): # collisions between player and bombs
-    sleep(0.2)
+    aud_bomb_hit.play()
+    sleep(0.5)
     player_lives -= 1
     if player_lives == 0:
       is_game_over = True
@@ -380,7 +382,9 @@ while running:
   if frames % (alien_fire_rate * FPS) == 0: # check to see if aliens should fire bombs
     if list(aliens) != []:
       chosen_alien = choice(list(aliens))
-      if chosen_alien != None: chosen_alien.drop_bomb()
+      if chosen_alien != None: 
+        chosen_alien.drop_bomb()
+        aud_bomb_launch.play()
   
   if frames % 60 == 0: # implementation of timer
     timer = frames // FPS 
