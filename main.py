@@ -314,6 +314,7 @@ def start_game():
   num_waves -= 1
   player = Player()
   all_sprites.add(player)
+  menu_music.stop()
   gameplay_music.play(loops=-1)
   
 # Function Calls
