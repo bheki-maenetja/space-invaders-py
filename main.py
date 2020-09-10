@@ -7,7 +7,6 @@ from time import sleep
 from pygame.locals import (
   K_RIGHT,
   K_LEFT,
-  K_UP,
   K_SPACE
 )
 
