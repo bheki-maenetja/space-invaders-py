@@ -1,4 +1,4 @@
-main_settings = { # Aliens speeds: 1,2,4,5,8,10 & 20 (maybe)
+main_settings = { # Aliens speeds: 1,2,4,5,8,10 and 20 (maybe)
   1: {
     'alien_speed': 1,
     'alien_fire_rate': 2.5,
