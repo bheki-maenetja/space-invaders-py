@@ -12,7 +12,7 @@ main_settings = { # Aliens speeds: 1,2,4,5,8,10 and 20 (maybe)
     'alien_fire_rate': 1.5,
     'num_waves': 3,
     'num_ships': 2,
-    'mothership_lives': 20,
+    'mothership_lives': 12,
     'alien_hit_points': 20
   },
   3: {
@@ -20,7 +20,7 @@ main_settings = { # Aliens speeds: 1,2,4,5,8,10 and 20 (maybe)
     'alien_fire_rate': 1.2,
     'num_waves': 5,
     'num_ships': 3,
-    'mothership_lives': 30,
+    'mothership_lives': 14,
     'alien_hit_points': 50
   },
   4: {
@@ -28,7 +28,7 @@ main_settings = { # Aliens speeds: 1,2,4,5,8,10 and 20 (maybe)
     'alien_fire_rate': 1,
     'num_waves': 6,
     'num_ships': 4,
-    'mothership_lives': 40,
+    'mothership_lives': 16,
     'alien_hit_points': 100
   },
   5: {
@@ -36,7 +36,7 @@ main_settings = { # Aliens speeds: 1,2,4,5,8,10 and 20 (maybe)
     'alien_fire_rate': 0.5,
     'num_waves': 7,
     'num_ships': 5,
-    'mothership_lives': 50,
+    'mothership_lives': 18,
     'alien_hit_points': 150
   },
 }
