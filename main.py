@@ -290,7 +290,7 @@ def reset_game():
   frames = 0
   timer = 0
   game_level = 1
-  player_lives = 10
+  player_lives = 5
   player_score = 0
   alien_speed = 0
   alien_fire_rate = 0 
@@ -337,9 +337,9 @@ while running:
         start_game()
       elif (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 175 <= event.pos[1] <= HEIGHT/2 + 225):
         running = False
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN: # <-- Skip through waves of aliens
-      for alien in aliens:
-        alien.kill()
+    # if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN: # <-- Skip through waves of aliens
+    #   for alien in aliens:
+    #     alien.kill()
 
   # Update
   if is_game_over: continue # if the game is not in play move on
