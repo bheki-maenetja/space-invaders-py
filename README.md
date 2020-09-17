@@ -19,5 +19,5 @@ An implementation of the classic 80s arcade game built with pygame and the pytho
 The game is a pythonic implementation of the popular arcade game Space Invaders. When the game begins, the player has to shoot down multiple waves of aliens that approach with increasing speed. The player moves their spacecraft with the left and right arrow keys whilst firing bullets with the spacebar. The objective of the game is to eliminate all the aliens whilst losing as few lives as possible. Points are awarded for each alien kill and bonus points are awarded for each mothership that is destroyed.
 
 <figcaption>Gameplay</figcation>
-<img src="img/screencast_gameplay.gif" width="100%" />
+<img src="img/screencast_gamplay.png" />
 
