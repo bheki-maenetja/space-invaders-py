@@ -240,7 +240,7 @@ def draw_text(surf, text, size, x, y):
   surf.blit(text_surf, text_rect)
 
 # SCREENS
-def draw_menu(screen):
+def draw_menu(screen, player_won=False):
   gameplay_music.stop()
   menu_music.play(loops=-1)
 
@@ -249,7 +249,12 @@ def draw_menu(screen):
   menu_rect = menu_surf.get_rect(center=(WIDTH/2, HEIGHT/2))
   menu_surf.blit(screen_background, background_rect)
 
-  draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
+  if player_won:
+    draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
+    draw_text(menu_surf, 'YOU WON!!!', 80, WIDTH/2, 175)
+  else:
+    draw_text(menu_surf, 'GAME OVER', 96, WIDTH/2, 100)
+    draw_text(menu_surf, 'DEFEAT', 80, WIDTH/2, 175)
   draw_text(menu_surf, f"Score: {player_score}", 48, WIDTH/2, HEIGHT/2 - 50)
   draw_text(menu_surf, f"High Score: {gameplay_stats['high_score']}", 48, WIDTH/2, HEIGHT/2)
   draw_text(menu_surf, f"Time: {timer}s", 48, WIDTH/2, HEIGHT/2 + 50)
@@ -383,6 +388,7 @@ while running:
   elif pygame.sprite.spritecollide(player, aliens, False):
     sleep(0.25)
     is_game_over = True
+    player_lives = 0
 
   frames += 1
 
@@ -403,7 +409,7 @@ while running:
     for sprite in all_sprites:
       sprite.kill()
     set_game_stats()
-    draw_menu(screen)
+    draw_menu(screen, player_lives > 0)
     reset_game()
   else:
     all_sprites.draw(screen)
