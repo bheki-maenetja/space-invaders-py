@@ -19,10 +19,11 @@ An implementation of the classic 80s arcade game built with pygame and the pytho
 The game is a pythonic implementation of the popular arcade game Space Invaders. When the game begins, the player has to shoot down multiple waves of aliens that approach with increasing speed. The player moves their spacecraft with the left and right arrow keys whilst firing bullets with the spacebar. The objective of the game is to eliminate all the aliens whilst losing as few lives as possible. Points are awarded for each alien kill and bonus points are awarded for each mothership that is destroyed.
 
 ###### <figcaption>Gameplay</figcation>
-<img src="https://github.com/bheki-maenetja/space-invaders-py/blob/master/img/screencast_gamplay.gif?raw=true" width="49%" />
-<img src="https://github.com/bheki-maenetja/space-invaders-py/blob/master/img/screencast_gamplay-motherships.gif?raw=true" width="49%" />
+|<img src="https://github.com/bheki-maenetja/space-invaders-py/blob/master/img/screencast_gamplay.gif?raw=true" /> | <img src="https://github.com/bheki-maenetja/space-invaders-py/blob/master/img/screencast_gamplay-motherships.gif?raw=true" /> |
+|---|---|
+
 
 ###### <figcaption>The aim of the game is to eliminate all aliens and motherships whilst losing as few lives as possible</figcaption>
-<img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-victory_uqffjv.png" width="49%" />
-<img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-defeat_u0ni7v.png" width="49%" />
+| <img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-victory_uqffjv.png" /> | <img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-defeat_u0ni7v.png" /> |
+|---|---|
 
