@@ -37,7 +37,15 @@ aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.wav'))
 gameplay_music = pygame.mixer.Sound(path.join(audio_dir, 'gameplay-music.wav'))
 menu_music = pygame.mixer.Sound(path.join(audio_dir, 'menu-music.wav'))
 
-gameplay_music.set_volume(0.1)
+# Set volume level for all sounds
+sound_volume = 0.1
+
+gameplay_music.set_volume(sound_volume)
+menu_music.set_volume(sound_volume)
+aud_alien_kill.set_volume(sound_volume)
+aud_bomb_hit.set_volume(sound_volume)
+aud_bomb_launch.set_volume(sound_volume)
+aud_laser_blast.set_volume(sound_volume)
 
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
