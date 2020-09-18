@@ -37,6 +37,8 @@ aud_laser_blast = pygame.mixer.Sound(path.join(audio_dir, 'laser-blast.wav'))
 gameplay_music = pygame.mixer.Sound(path.join(audio_dir, 'gameplay-music.wav'))
 menu_music = pygame.mixer.Sound(path.join(audio_dir, 'menu-music.wav'))
 
+gameplay_music.set_volume(0.1)
+
 # LOAD ALL SPRITE IMAGES
 img_dir = path.join(path.dirname(__file__), 'img')
 
@@ -342,9 +344,9 @@ while running:
         start_game()
       elif (WIDTH/2 - 125 <= event.pos[0] <= WIDTH/2 + 125) and (HEIGHT/2 + 175 <= event.pos[1] <= HEIGHT/2 + 225):
         running = False
-    # if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN: # <-- Skip through waves of aliens
-    #   for alien in aliens:
-    #     alien.kill()
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN: # <-- Skip through waves of aliens
+      for alien in aliens:
+        alien.kill()
 
   # Update
   if is_game_over: continue # if the game is not in play move on
