@@ -27,3 +27,8 @@ The game is a pythonic implementation of the popular arcade game Space Invaders.
 | <img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-victory_uqffjv.png" /> | <img src="https://res.cloudinary.com/dyed10v2u/image/upload/v1600344391/project_space-invaders-py/screenshot_game-over-screen-defeat_u0ni7v.png" /> |
 |---|---|
 
+## Development
+## Reflection
+## Future Features
+- **Menu:** the game features a rudimentary menu with only two buttons and basic information about the most recent match. In the next update I would like to create a more expansive menu where users can configure settings for their matches and view their record for all the matches that they have played.
+- **Power Ups:** for the next update I will allow for the user to attain 'power ups' that can provide temporary enhancements to the user's gameplay. These enchaments may include increased fire rate, protection from bombs or reinforcement ships that can help the user take on the aliens.
