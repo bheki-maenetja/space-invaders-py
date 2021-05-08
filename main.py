@@ -38,7 +38,7 @@ gameplay_music = pygame.mixer.Sound(path.join(audio_dir, 'gameplay-music.wav'))
 menu_music = pygame.mixer.Sound(path.join(audio_dir, 'menu-music.wav'))
 
 # Set volume level for all sounds
-sound_volume = 0.1
+sound_volume = 0.01
 
 gameplay_music.set_volume(sound_volume)
 menu_music.set_volume(sound_volume)
