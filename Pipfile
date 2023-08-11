@@ -7,7 +7,7 @@ verify_ssl = true
 pylint = "*"
 
 [packages]
-pygame = "==2.0.0.dev6"
+pygame = "==2.0.0.dev12"
 
 [requires]
 python_version = "3.7"
